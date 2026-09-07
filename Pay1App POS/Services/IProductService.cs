@@ -12,5 +12,7 @@ namespace Pay1App_POS.Services
         Task<List<Product>> GetAllProductsAsync();
         Task<Product?> GetByBarcodeAsync(string barcode);
         Task<List<Product>> SearchAsync(string term);
+        Task<List<Category>> GetCategoriesAsync();
+        Task<List<Product>> GetByCategoryAsync(string categoryName);
     }
 }

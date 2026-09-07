@@ -169,16 +169,25 @@ namespace Pay1App_POS.ViewModels
             Total = SubTotal + Tax;
         }
         [RelayCommand]
+       
         private async Task FilterCategory(string category)
         {
-            if (string.IsNullOrEmpty(category))
+            if (string.IsNullOrWhiteSpace(category))
             {
                 await LoadProducts();
                 return;
             }
 
             var all = await _productService.GetAllProductsAsync();
-            var filtered = all.Where(p => p.Category.Equals(category, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            var filtered = all
+                .Where(p =>
+                    string.Equals(
+                        p.Category?.Name,          // if Category is navigation property
+                        category,
+                        StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
             Products = new ObservableCollection<Product>(filtered);
             StatusMessage = $"{filtered.Count} {category} products";
         }

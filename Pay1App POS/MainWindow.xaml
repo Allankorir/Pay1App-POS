@@ -5,12 +5,82 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pay1App_POS"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1400"
-        WindowStartupLocation="CenterScreen"
-        Background="#F5F6FA"
-        FontFamily="Segoe UI">
+        Title="Pay1App POS"
+Width="1920"
+Height="1080"
+WindowState="Maximized"
+WindowStartupLocation="CenterScreen"
+Background="#F5F6FA"
+FontFamily="Segoe UI">
+
     <Window.Resources>
-        <!-- Primary Button -->
+        <!-- Bordered triangle used at the bottom of nav buttons -->
+        <Style x:Key="ToolbarCaret" TargetType="Path">
+            <Setter Property="Width" Value="12"/>
+            <Setter Property="Height" Value="7"/>
+            <Setter Property="Stretch" Value="Fill"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,4,0,-2"/>
+            <Setter Property="Fill" Value="White"/>
+            <Setter Property="Stroke" Value="#9CA3AF"/>
+            <Setter Property="StrokeThickness" Value="1.2"/>
+            <Setter Property="StrokeLineJoin" Value="Round"/>
+            <Setter Property="Data" Value="M 0,0 L 12,0 L 6,7 Z"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+
+        <!-- Left nav buttons: icon + label + bordered triangle -->
+        <Style x:Key="NavButton" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#1F2937"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="3,8"/>
+            <Setter Property="MinWidth" Value="78"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"
+                                Padding="12,8,12,6">
+                            <StackPanel HorizontalAlignment="Center">
+                                <ContentPresenter HorizontalAlignment="Center"/>
+                                <Path Style="{StaticResource ToolbarCaret}"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#F3F4F6"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#9CA3AF"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#E5E7EB"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="NavIcon" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="Foreground" Value="#374151"/>
+        </Style>
+
+        <Style x:Key="NavLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#374151"/>
+        </Style>
+
         <Style x:Key="ToolbarButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -21,7 +91,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                        <Border x:Name="border" Background="{TemplateBinding Background}"
                                 CornerRadius="6" Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
@@ -35,7 +105,6 @@
             </Setter>
         </Style>
 
-        <!-- Green Payment Button -->
         <Style x:Key="PayButton" TargetType="Button" BasedOn="{StaticResource ToolbarButton}">
             <Setter Property="Background" Value="#22C55E"/>
             <Setter Property="Foreground" Value="White"/>
@@ -48,7 +117,36 @@
             </Style.Triggers>
         </Style>
 
-        <!-- Category Tile -->
+        <Style x:Key="FnButton" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#1F2937"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Margin" Value="0,8,8,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#F3F4F6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="CategoryTile" TargetType="Button">
             <Setter Property="Background" Value="#3B82F6"/>
             <Setter Property="Foreground" Value="White"/>
@@ -67,7 +165,6 @@
             </Setter>
         </Style>
 
-        <!-- Product Card -->
         <Style x:Key="ProductCard" TargetType="Button">
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="#E5E7EB"/>
@@ -76,7 +173,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
+                        <Border Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="10" Padding="8">
@@ -96,36 +193,78 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
-            <!-- Top Toolbar -->
+            <RowDefinition Height="92"/>
             <RowDefinition Height="*"/>
-            <!-- Main Content -->
             <RowDefinition Height="70"/>
-            <!-- Bottom bar -->
         </Grid.RowDefinitions>
 
-        <!-- ==================== TOP TOOLBAR ==================== -->
+        <!-- TOP TOOLBAR -->
         <Border Grid.Row="0" Background="White" BorderBrush="#E5E7EB" BorderThickness="0,0,0,1">
-            <Grid Margin="12,0">
+            <Grid Margin="8,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button Style="{StaticResource ToolbarButton}" Content="🔍  Search"/>
-                    <Button Style="{StaticResource ToolbarButton}" Content="👤  Customer"/>
-                    <Button Style="{StaticResource ToolbarButton}" Content="🔄  Transfer"/>
-                    <Button Style="{StaticResource ToolbarButton}" Content="%  Discount"/>
-                    <Button Style="{StaticResource ToolbarButton}" Content="💬  Comment"/>
-                    <Button Style="{StaticResource ToolbarButton}" Content="+  New sale"/>
-                    <Button Style="{StaticResource ToolbarButton}" Content="↩  Refund"/>
-                    <Button Style="{StaticResource ToolbarButton}" Content="👤  John"/>
-                    <Button Style="{StaticResource ToolbarButton}" Content="💰  Cash drawer"/>
+                    <Button Style="{StaticResource NavButton}">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource NavIcon}" Text="&#xE721;"/>
+                            <TextBlock Style="{StaticResource NavLabel}" Text="Search"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource NavIcon}" Text="&#xE77B;"/>
+                            <TextBlock Style="{StaticResource NavLabel}" Text="Customer"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource NavIcon}" Text="&#xE8AB;"/>
+                            <TextBlock Style="{StaticResource NavLabel}" Text="Transfer"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource NavIcon}" Text="&#xE8C9;"/>
+                            <TextBlock Style="{StaticResource NavLabel}" Text="Discount"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource NavIcon}" Text="&#xE8BD;"/>
+                            <TextBlock Style="{StaticResource NavLabel}" Text="Comment"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource NavIcon}" Text="&#xE710;"/>
+                            <TextBlock Style="{StaticResource NavLabel}" Text="New sale"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource NavIcon}" Text="&#xE7A7;"/>
+                            <TextBlock Style="{StaticResource NavLabel}" Text="Refund"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource NavIcon}" Text="&#xE77B;"/>
+                            <TextBlock Style="{StaticResource NavLabel}" Text="John"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource NavIcon}" Text="&#xE7BF;"/>
+                            <TextBlock Style="{StaticResource NavLabel}" Text="Cash drawer"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button Style="{StaticResource ToolbarButton}" Content="F9  Save sale" Margin="0,0,8,0"/>
+                    <Button Style="{StaticResource FnButton}" Content="F9  Save sale"/>
                     <Button Style="{StaticResource PayButton}" Content="F10  Payment" Margin="0,0,8,0"
                             Command="{Binding CheckoutCommand}"/>
                     <Button Style="{StaticResource PayButton}" Content="F12  Cash"
@@ -134,18 +273,15 @@
             </Grid>
         </Border>
 
-        <!-- ==================== MAIN CONTENT ==================== -->
+        <!-- MAIN CONTENT -->
         <Grid Grid.Row="1" Margin="12">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="340"/>
-                <!-- Cart -->
                 <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="*"/>
-                <!-- Products -->
             </Grid.ColumnDefinitions>
 
-            <!-- LEFT: CART / ORDER -->
-            <Border Grid.Column="0" Background="White" CornerRadius="10" 
+            <Border Grid.Column="0" Background="White" CornerRadius="10"
                     BorderBrush="#E5E7EB" BorderThickness="1">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -154,11 +290,10 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Cart Header -->
                     <Border Grid.Row="0" BorderBrush="#E5E7EB" BorderThickness="0,0,0,1" Padding="12,0">
                         <Grid>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Button Content="✕ Delete" Foreground="#DC2626" Background="Transparent" 
+                                <Button Content="✕ Delete" Foreground="#DC2626" Background="Transparent"
                                         BorderThickness="0" FontWeight="SemiBold" Cursor="Hand"
                                         Command="{Binding ClearCartCommand}"/>
                                 <TextBlock Text="   Quantity" VerticalAlignment="Center" Margin="16,0,0,0" Foreground="#6B7280"/>
@@ -168,7 +303,6 @@
                         </Grid>
                     </Border>
 
-                    <!-- Cart Items -->
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="8">
                         <ItemsControl ItemsSource="{Binding CartItems}">
                             <ItemsControl.ItemTemplate>
@@ -179,9 +313,8 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-
                                             <StackPanel>
-                                                <TextBlock Text="{Binding Product.Name}" FontWeight="SemiBold" 
+                                                <TextBlock Text="{Binding Product.Name}" FontWeight="SemiBold"
                                                            FontSize="14" TextWrapping="Wrap"/>
                                                 <TextBlock Foreground="#6B7280" FontSize="12" Margin="0,2,0,0">
                                                     <Run Text="{Binding Quantity, Mode=OneWay}"/>
@@ -189,7 +322,6 @@
                                                     <Run Text="{Binding UnitPrice, StringFormat={}{0:N2}, Mode=OneWay}"/>
                                                 </TextBlock>
                                             </StackPanel>
-
                                             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                                                 <Button Content="−" Width="28" Height="28" FontSize="14"
                                                         Command="{Binding DataContext.DecreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=Window}}"
@@ -210,22 +342,21 @@
                         </ItemsControl>
                     </ScrollViewer>
 
-                    <!-- Totals -->
                     <Border Grid.Row="2" BorderBrush="#E5E7EB" BorderThickness="0,1,0,0" Padding="14">
                         <StackPanel>
                             <Grid Margin="0,4">
                                 <TextBlock Text="Subtotal" Foreground="#6B7280"/>
-                                <TextBlock Text="{Binding SubTotal, StringFormat={}{0:N2}}" 
+                                <TextBlock Text="{Binding SubTotal, StringFormat={}{0:N2}}"
                                            HorizontalAlignment="Right" FontWeight="SemiBold"/>
                             </Grid>
                             <Grid Margin="0,4">
                                 <TextBlock Text="Tax" Foreground="#6B7280"/>
-                                <TextBlock Text="{Binding Tax, StringFormat={}{0:N2}}" 
+                                <TextBlock Text="{Binding Tax, StringFormat={}{0:N2}}"
                                            HorizontalAlignment="Right"/>
                             </Grid>
                             <Grid Margin="0,8,0,0">
                                 <TextBlock Text="Total" FontSize="18" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding Total, StringFormat={}{0:N2}}" 
+                                <TextBlock Text="{Binding Total, StringFormat={}{0:N2}}"
                                            FontSize="20" FontWeight="Bold"
                                            HorizontalAlignment="Right" Foreground="#7C3AED"/>
                             </Grid>
@@ -234,7 +365,6 @@
                 </Grid>
             </Border>
 
-            <!-- RIGHT: CATEGORIES + PRODUCTS -->
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -242,7 +372,6 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <!-- Search bar -->
                 <Border Background="White" CornerRadius="8" BorderBrush="#E5E7EB" BorderThickness="1" Padding="4">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -259,10 +388,8 @@
                     </Grid>
                 </Border>
 
-                <!-- Category tiles + Product grid -->
                 <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <!-- Categories -->
                         <UniformGrid Columns="4" Margin="0,0,0,16">
                             <Button Style="{StaticResource CategoryTile}" Background="#3B82F6" Height="70" Margin="0,0,8,0"
                                     Content="Wine" Command="{Binding FilterCategoryCommand}" CommandParameter="Wine"/>
@@ -274,7 +401,6 @@
                                     Content="All" Command="{Binding FilterCategoryCommand}" CommandParameter=""/>
                         </UniformGrid>
 
-                        <!-- Product Cards -->
                         <ItemsControl ItemsSource="{Binding Products}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -292,21 +418,17 @@
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
-
-                                            <!-- Placeholder for image -->
                                             <Border Background="#F3F4F6" CornerRadius="8" Margin="0,0,0,8">
-                                                <TextBlock Text="{Binding Category}" 
+                                                <TextBlock Text="{Binding Category}"
                                                            HorizontalAlignment="Center" VerticalAlignment="Center"
                                                            Foreground="#9CA3AF" FontSize="13"/>
                                             </Border>
-
-                                            <TextBlock Grid.Row="1" Text="{Binding Name}" 
+                                            <TextBlock Grid.Row="1" Text="{Binding Name}"
                                                        FontWeight="SemiBold" FontSize="13"
                                                        TextWrapping="Wrap" TextAlignment="Center"
                                                        Margin="0,0,0,4"/>
-
-                                            <TextBlock Grid.Row="2" 
-                                                       Text="{Binding Price, StringFormat={}{0:N2}}" 
+                                            <TextBlock Grid.Row="2"
+                                                       Text="{Binding Price, StringFormat={}{0:N2}}"
                                                        FontWeight="Bold" FontSize="15"
                                                        Foreground="#7C3AED" HorizontalAlignment="Center"/>
                                         </Grid>
@@ -319,19 +441,18 @@
             </Grid>
         </Grid>
 
-        <!-- ==================== BOTTOM BAR ==================== -->
+        <!-- BOTTOM BAR -->
         <Border Grid.Row="2" Background="White" BorderBrush="#E5E7EB" BorderThickness="0,1,0,0">
             <Grid Margin="16,0">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button Content="Void order" Background="#DC2626" Foreground="White" 
+                    <Button Content="Void order" Background="#DC2626" Foreground="White"
                             FontWeight="SemiBold" Padding="16,10" BorderThickness="0" Cursor="Hand"
                             Command="{Binding ClearCartCommand}"/>
-                    <Button Content="🔒  Lock" Margin="12,0,0,0" Padding="16,10" 
+                    <Button Content="Lock" Margin="12,0,0,0" Padding="16,10"
                             Background="#F3F4F6" BorderThickness="0" Cursor="Hand"/>
-                    <Button Content="↻  Repeat round" Margin="12,0,0,0" Padding="16,10" 
+                    <Button Content="Repeat round" Margin="12,0,0,0" Padding="16,10"
                             Background="#F3F4F6" BorderThickness="0" Cursor="Hand"/>
                 </StackPanel>
-
                 <TextBlock Text="{Binding StatusMessage}" VerticalAlignment="Center"
                            HorizontalAlignment="Right" Foreground="#6B7280" FontSize="13"/>
             </Grid>
